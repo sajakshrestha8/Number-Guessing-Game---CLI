@@ -11,7 +11,6 @@ let chances;
 let attempt;
 let name;
 let randomNumber = Math.floor(Math.random() * 100);
-console.log(randomNumber);
 
 console.log(chalk.bgBlue.bold("Welcome to the Number Guessing Game!") + "\n");
 console.log(chalk.gray("Thinking of a number between 1 to 100 ....") + "\n\n");
