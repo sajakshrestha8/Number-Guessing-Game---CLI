@@ -1,11 +1,5 @@
-const express = require("express");
 const readlineSync = require("readline-sync");
 const chalk = require("chalk");
-
-const app = express();
-
-const PORT = 8000;
-let server = app.listen(PORT, () => {});
 
 let chances;
 let attempt;
@@ -20,7 +14,7 @@ console.log(chalk.yellow.bold("1. Easy (10 chances)"));
 console.log(chalk.yellow.bold("2. Medium (5 chances)"));
 console.log(chalk.yellow.bold("3. Hard (3 chances)") + "\n");
 
-name = readlineSync.question(chalk.magenta.bold("Choose your level: "));
+name = readlineSync.questionInt(chalk.magenta.bold("Choose your level: "));
 
 function compareNumber(chances, attempt) {
   let guess = readlineSync.questionInt(
@@ -35,7 +29,7 @@ function compareNumber(chances, attempt) {
     );
     if (chances <= 1) {
       console.log("Your have no chances left, Better Luck Next Time");
-      server.close();
+      process.exit();
     } else {
       compareNumber(chances - 1, attempt + 1);
     }
@@ -45,7 +39,7 @@ function compareNumber(chances, attempt) {
     );
     if (chances <= 1) {
       console.log("Your have no chances left, Better Luck Next Time");
-      server.close();
+      process.exit();
     } else {
       compareNumber(chances - 1, attempt + 1);
     }
@@ -55,35 +49,37 @@ function compareNumber(chances, attempt) {
         `Congratulation you have done the correct guess in ${attempt} attempt! Thankyou for playing`
       )
     );
-    server.close();
+    process.exit();
   }
 }
 
-if (name === "1") {
-  chances = 10;
-  attempt = 0;
-  console.log(
-    "\n" + "you have choosed easy mode" + "\n",
-    "Let's start the game" + "\n"
-  );
-  compareNumber(chances, attempt);
-} else if (name === "2") {
-  chances = 5;
-  console.log(
-    "\n" + "you have choosed medium mode" + "\n",
-    "Let's start the game"
-  );
-  compareNumber(chances, attempt);
-} else if (name === "3") {
-  chances = 3;
-  console.log(
-    "\n" + "You have choosed hard mode" + "\n",
-    "Let's start the game"
-  );
-  compareNumber(chances, attempt);
-} else {
-  console.log("\n" + "You have choosed wrong mode");
-  server.close();
+switch (name) {
+  case 1:
+    chances = 10;
+    attempt = 0;
+    console.log(
+      "\n" + "you have choosed easy mode" + "\n",
+      "Let's start the game" + "\n"
+    );
+    compareNumber(chances, attempt);
+    break;
+  case 2:
+    chances = 5;
+    console.log(
+      "\n" + "you have choosed medium mode" + "\n",
+      "Let's start the game"
+    );
+    compareNumber(chances, attempt);
+    break;
+  case 3:
+    chances = 3;
+    console.log(
+      "\n" + "You have choosed hard mode" + "\n",
+      "Let's start the game"
+    );
+    compareNumber(chances, attempt);
+    break;
+  default:
+    console.log("\n" + "You have choosed wrong mode");
+    process.exit();
 }
-
-// gameFunction();
