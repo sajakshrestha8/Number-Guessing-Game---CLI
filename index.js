@@ -12,7 +12,6 @@ function game() {
   let randomNumber = Math.ceil(Math.random() * 100);
 
   console.log(chalk.redBright(figlet.textSync("Number Guessing Game!")) + "\n");
-  console.log(randomNumber);
   console.log(
     chalk.gray("Thinking of a number between 1 to 100 ....") + "\n\n"
   );
