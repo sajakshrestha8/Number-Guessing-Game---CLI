@@ -1,12 +1,18 @@
 const readlineSync = require("readline-sync");
 const chalk = require("chalk");
+const figlet = require("figlet");
+const fs = require("fs");
 
 function game() {
   let chances;
-  let attempt;
+  let attempt = 1;
   let name;
+  let highscoreLimit;
+  let highscore = require("./highscore.json");
+  let randomNumber = Math.ceil(Math.random() * 100);
 
-  console.log(chalk.bgBlue.bold("Welcome to the Number Guessing Game!") + "\n");
+  console.log(chalk.redBright(figlet.textSync("Number Guessing Game!")) + "\n");
+  console.log(randomNumber);
   console.log(
     chalk.gray("Thinking of a number between 1 to 100 ....") + "\n\n"
   );
@@ -31,8 +37,6 @@ function game() {
   }
 
   function compareNumber(chances, attempt) {
-    let randomNumber = Math.ceil(Math.random() * 100);
-
     let guess = readlineSync.questionInt(
       chalk.magenta.bold("Enter your guess: ")
     );
@@ -42,7 +46,6 @@ function game() {
         console.log(
           `Your have no chances left, Better Luck Next Time. The actual number was ${randomNumber}`
         );
-        // process.exit();
         restartGame();
       } else {
         compareNumber(chances - 1, attempt + 1);
@@ -55,7 +58,6 @@ function game() {
         console.log(
           `Your have no chances left, Better Luck Next Time. The actual number was ${randomNumber}`
         );
-        // process.exit();
         restartGame();
       } else {
         compareNumber(chances - 1, attempt + 1);
@@ -68,7 +70,6 @@ function game() {
         console.log(
           `Your have no chances left, Better Luck Next Time. The actual number was ${randomNumber}`
         );
-        // process.exit();
         restartGame();
       } else {
         compareNumber(chances - 1, attempt + 1);
@@ -79,7 +80,24 @@ function game() {
           `Congratulation you have done the correct guess in ${attempt} attempt! Thankyou for playing`
         )
       );
-      // process.exit();
+      console.log("Your highscore is: ", attempt);
+      if (highscoreLimit === 10) {
+        if (attempt < highscore.easyMode) {
+          highscore.easyMode = attempt;
+          fs.writeFileSync("highscore.json", JSON.stringify(highscore));
+        }
+      } else if (highscoreLimit === 5) {
+        if (attempt < highscore.mediumMode) {
+          highscore.mediumMode = attempt;
+          fs.writeFileSync("highscore.json", JSON.stringify(highscore));
+        }
+      } else if (highscoreLimit === 3) {
+        if (attempt < highscore.hardMode) {
+          highscore.hardMode = attempt;
+          fs.writeFileSync("highscore.json", JSON.stringify(highscore));
+        }
+      }
+
       restartGame();
     }
   }
@@ -87,7 +105,8 @@ function game() {
   switch (name) {
     case 1:
       chances = 10;
-      attempt = 0;
+      highscoreLimit = 10;
+      console.log("HighScore of easy mode:", highscore.easyMode);
       console.log(
         "\n" + "you have choosed easy mode" + "\n",
         "Let's start the game" + "\n"
@@ -96,6 +115,8 @@ function game() {
       break;
     case 2:
       chances = 5;
+      highscoreLimit = 5;
+      console.log("HighScore of medium mode:", highscore.mediumMode);
       console.log(
         "\n" + "you have choosed medium mode" + "\n",
         "Let's start the game"
@@ -104,6 +125,8 @@ function game() {
       break;
     case 3:
       chances = 3;
+      highscoreLimit = 3;
+      console.log("HighScore of hard mode:", highscore.hardMode);
       console.log(
         "\n" + "You have choosed hard mode" + "\n",
         "Let's start the game"
