@@ -2,6 +2,7 @@ const readlineSync = require("readline-sync");
 const chalk = require("chalk");
 const figlet = require("figlet");
 const fs = require("fs");
+let s = 0;
 
 function game() {
   let chances;
@@ -79,7 +80,6 @@ function game() {
           `Congratulation you have done the correct guess in ${attempt} attempt! Thankyou for playing`
         )
       );
-      console.log("Your highscore is: ", attempt);
       if (highscoreLimit === 10) {
         if (attempt < highscore.easyMode) {
           highscore.easyMode = attempt;
