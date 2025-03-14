@@ -26,8 +26,8 @@ function game() {
 
   function restartGame() {
     console.log("Do you want to restart the game ?");
+    randomNumber = Math.ceil(Math.random() * 100);
     let input = readlineSync.question("y/n: ");
-
     switch (input) {
       case "y":
         compareNumber(chances, attempt);
